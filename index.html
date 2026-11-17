@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123d32">
+  <meta name="description" content="Dani's Christmas Portal — a festive little gift-finding adventure.">
+  <title>Dani's Christmas Portal 🎄</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="wishlist-data.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#" id="homeLink" aria-label="Dani's Christmas Portal home"><span>✳</span> DANI'S CHRISTMAS PORTAL</a>
+    <div class="countdown" id="countdown" aria-live="polite">Christmas is loading…</div>
+  </header>
+
+  <main id="app" class="app-shell">
+    <section class="screen expired-screen hidden" id="expiredScreen" aria-labelledby="expiredTitle">
+      <div class="expired-icon" aria-hidden="true">🎄</div>
+      <p class="eyebrow">THE CHRISTMAS PORTAL HAS CLOSED</p>
+      <h1 id="expiredTitle">That's a wrap!</h1>
+      <p class="intro">Dani's Christmas Portal has finished for the season. Thanks for stopping by, and wishing you a lovely holiday!</p>
+    </section>
+    <section class="screen welcome-screen" id="welcomeScreen">
+      <div class="eyebrow"><span>✦</span> THE MOST WONDERFUL TIME OF THE YEAR <span>✦</span></div>
+      <div class="hero-art" aria-hidden="true">
+        <span class="ornament ornament-one">✧</span><span class="ornament ornament-two">✦</span>
+        <div class="tree">🎄</div><span class="gift gift-one">🎁</span><span class="gift gift-two">🎁</span>
+      </div>
+      <h1>Welcome to Dani's<br><em>Christmas Portal</em></h1>
+      <p class="intro">A tiny festive adventure to help you find a gift she'll actually love.</p>
+      <button class="button button-primary button-large" id="enterButton">Enter <span aria-hidden="true">→</span></button>
+      <p class="microcopy">No passwords. No tests. Just excellent gift-giving.</p>
+    </section>
+
+    <section class="screen quiz-screen hidden" id="relationshipScreen" aria-labelledby="relationshipTitle">
+      <div class="step-label">YOUR CHRISTMAS QUEST <span>01 / 02</span></div>
+      <div class="progress"><span style="width:50%"></span></div>
+      <p class="eyebrow">FIRST THINGS FIRST</p>
+      <h2 id="relationshipTitle">How do you know Dani?</h2>
+      <p class="subheading">Choose your role. We won't judge. (Much.)</p>
+      <div class="relationship-grid" id="relationshipOptions">
+        <button class="relationship-card" data-role="parent"><span class="role-icon">🏡</span><span>Parent</span><small>Chief Christmas officer</small></button>
+        <button class="relationship-card" data-role="sibling"><span class="role-icon">😈</span><span>Sibling</span><small>Professional menace</small></button>
+        <button class="relationship-card" data-role="grandparent"><span class="role-icon">💌</span><span>Grandparent</span><small>Favourite softie</small></button>
+        <button class="relationship-card" data-role="friend"><span class="role-icon">🥂</span><span>Friend</span><small>Partner in festive crime</small></button>
+        <button class="relationship-card" data-role="coworker"><span class="role-icon">☕</span><span>Coworker</span><small>Work bestie energy</small></button>
+        <button class="relationship-card" data-role="secret"><span class="role-icon">😏</span><span>Secret Admirer</span><small>Oh? Interesting.</small></button>
+      </div>
+      <button class="text-button" id="backToWelcome">← Back</button>
+    </section>
+
+    <section class="screen quiz-screen hidden" id="budgetScreen" aria-labelledby="budgetTitle">
+      <div class="step-label">YOUR CHRISTMAS QUEST <span>02 / 02</span></div>
+      <div class="progress"><span style="width:100%"></span></div>
+      <p class="eyebrow">LET'S FIND YOUR GIFTING LANE</p>
+      <h2 id="budgetTitle">What's your gifting budget?</h2>
+      <p class="subheading">No pressure. Thoughtful beats expensive every time.</p>
+      <div class="budget-options" id="budgetOptions">
+        <button class="budget-card" data-budget="small"><span>🎀</span><b>Under $30</b><small>Little treat, big energy</small></button>
+        <button class="budget-card" data-budget="medium"><span>🎁</span><b>$30–$75</b><small>A lovely little something</small></button>
+        <button class="budget-card" data-budget="big"><span>✨</span><b>$75+</b><small>We're making moves</small></button>
+        <button class="budget-card" data-budget="any"><span>💫</span><b>Show me everything</b><small>I'll decide from there</small></button>
+      </div>
+      <button class="text-button" id="backToRoles">← Change relationship</button>
+    </section>
+
+    <section class="screen wishlist-screen hidden" id="wishlistScreen" aria-labelledby="wishlistTitle">
+      <div class="wishlist-heading">
+        <div>
+          <p class="eyebrow" id="routeEyebrow">A LITTLE NOTE FOR YOU</p>
+          <h2 id="wishlistTitle">The good stuff.</h2>
+          <p class="subheading" id="routeMessage"></p>
+        </div>
+        <button class="snow-toggle" id="snowToggle" aria-pressed="true"><span>❄</span> Snow: on</button>
+      </div>
+      <div class="welcome-note" id="welcomeNote"></div>
+      <div class="toolbar">
+        <div class="filters" id="categoryFilters" aria-label="Filter wishlist categories"></div>
+        <label class="search-wrap"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Find a gift…" aria-label="Search gifts"></label>
+      </div>
+      <section class="favorites-section hidden" id="favoritesSection">
+        <div class="section-heading"><div><p class="eyebrow">THE FRONT-RUNNERS</p><h3>⭐ Dani's favourites</h3></div></div>
+        <div class="gift-grid" id="favoriteGrid"></div>
+      </section>
+      <div class="section-heading list-heading"><div><p class="eyebrow">THE WISHLIST</p><h3 id="categoryHeading">All the good stuff</h3></div><span class="item-count" id="itemCount"></span></div>
+      <div class="gift-grid" id="giftGrid"></div>
+      <div class="empty-state hidden" id="emptyState"><span>🧦</span><h3>No gifts found</h3><p>Try another search or category.</p></div>
+      <div class="surprise-panel">
+        <span class="surprise-icon">🎲</span><div><b>Feeling lucky?</b><p>Let the Christmas spirits choose a gift for you.</p></div>
+        <button class="button button-secondary" id="surpriseButton">Surprise me</button>
+      </div>
+      <button class="text-button restart-button" id="restartButton">↶ Start over</button>
+      <footer>Made with questionable levels of Christmas enthusiasm · Dani © <span id="year"></span></footer>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog class="surprise-dialog" id="surpriseDialog">
+    <button class="dialog-close" id="closeDialog" aria-label="Close">×</button>
+    <div class="dialog-sparkle">✨</div><p class="eyebrow">THE CHRISTMAS SPIRITS HAVE SPOKEN</p>
+    <h2 id="surpriseName">Your mystery gift</h2><p id="surpriseDescription"></p>
+    <a class="button button-primary" id="surpriseLink" href="#" target="_blank" rel="noopener noreferrer">Take a look ↗</a>
+  </dialog>
+</body>
+</html>
