@@ -17,18 +17,13 @@
   const roleNames = {
     parent: "Parent",
     sibling: "Sibling",
-    grandparent: "Grandparent",
-    friend: "Friend",
-    coworker: "Coworker",
-    secret: "Secret Admirer"
+    grandparent: "Grandparent"
   };
 
   const roleIntros = {
     parent: "The family knows best. Here's a handy little guide.",
     sibling: "Let's see if you can finally make a good decision.",
-    grandparent: "A thoughtful gift is lovely, but time together is even lovelier.",
-    friend: "You know the vibe. Here's the inside scoop.",
-    coworker: "A few easy ideas to make holiday gifting a breeze."
+    grandparent: "A thoughtful gift is lovely, but time together is even lovelier."
   };
 
   const $ = id => document.getElementById(id);
@@ -37,77 +32,106 @@
   let activeCategory = "All gifts";
   let searchTerm = "";
 
+  // Create the two private message pages.
+  // Neither page has access to the wishlist.
+  function createMessageScreen(id, title, emoji, message, extraMessage = "") {
+    const section = document.createElement("section");
+    section.id = id;
+    section.className = "screen hidden";
+
+    section.innerHTML = `
+      <div style="
+        max-width: 650px;
+        margin: 50px auto;
+        padding: 35px 25px;
+        text-align: center;
+        background: rgba(255,255,255,0.94);
+        border-radius: 20px;
+        box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+      ">
+        <div style="font-size: 48px; margin-bottom: 12px;">
+          ${emoji}
+        </div>
+        <p style="letter-spacing: 3px; font-size: 11px; font-weight: bold;">
+          A LITTLE CHRISTMAS MESSAGE
+        </p>
+        <h2 style="font-size: 30px; margin: 12px 0;">
+          ${title}
+        </h2>
+        <p id="${id}Message" style="
+          line-height: 1.9;
+          margin: 25px auto;
+          white-space: pre-line;
+        "></p>
+        ${extraMessage ? `
+          <div style="
+            margin: 28px 0;
+            padding: 22px;
+            background: rgba(245,230,230,0.55);
+            border-radius: 14px;
+          ">
+            <p id="${id}Extra" style="line-height: 1.8;"></p>
+          </div>
+        ` : ""}
+        <p style="font-size: 13px; opacity: 0.7; line-height: 1.6;">
+          No pressure. Just a little Christmas love. ❤️
+        </p>
+        <button id="${id}BackButton" type="button" style="
+          margin-top: 18px;
+          padding: 12px 24px;
+          border: none;
+          border-radius: 30px;
+          cursor: pointer;
+          font: inherit;
+        ">
+          Back to the beginning
+        </button>
+      </div>
+    `;
+
+    $("app").appendChild(section);
+
+    $(`${id}BackButton`).addEventListener("click", () => {
+      showScreen("welcomeScreen");
+    });
+
+    return section;
+  }
+
+  createMessageScreen(
+    "friendScreen",
+    "For my friends",
+    "🥂",
+    ""
+  );
+
+  createMessageScreen(
+    "secretScreen",
+    "Secret Admirer",
+    "💌",
+    "",
+    " "
+  );
+
   const screens = [
     "welcomeScreen",
     "relationshipScreen",
     "budgetScreen",
     "wishlistScreen",
+    "friendScreen",
     "secretScreen"
   ];
 
-  // Create the Secret Admirer screen without needing to edit index.html.
-  const secretScreen = document.createElement("section");
-  secretScreen.id = "secretScreen";
-  secretScreen.className = "hidden";
-  secretScreen.innerHTML = `
-    <div style="
-      max-width: 650px;
-      margin: 50px auto;
-      padding: 35px 25px;
-      text-align: center;
-      background: rgba(255,255,255,0.94);
-      border-radius: 20px;
-      box-shadow: 0 10px 35px rgba(0,0,0,0.08);
-    ">
-      <div style="font-size: 48px; margin-bottom: 12px;">💌</div>
-      <p style="letter-spacing: 3px; font-size: 11px; font-weight: bold;">
-        A LITTLE CHRISTMAS MYSTERY
-      </p>
-      <h2 style="font-size: 30px; margin: 12px 0;">
-        Secret Admirer
-      </h2>
-      <p id="secretMessage" style="line-height: 1.8; margin: 20px auto;">
-      </p>
-
-      <div style="
-        margin: 28px 0;
-        padding: 22px;
-        background: rgba(245,230,230,0.55);
-        border-radius: 14px;
-      ">
-        <p style="font-weight: bold; margin-top: 0;">
-          Your Christmas assignment, if you're just snooping:
-        </p>
-        <p id="snooperMessage" style="line-height: 1.8; margin-bottom: 0;">
-        </p>
-      </div>
-
-      <p style="font-size: 13px; opacity: 0.7; line-height: 1.6;">
-        No gift list. No shopping links. Just a little encouragement to be brave. ❤️
-      </p>
-
-      <button id="secretBackButton" type="button" style="
-        margin-top: 18px;
-        padding: 12px 24px;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        font: inherit;
-      ">
-        Back to the beginning
-      </button>
-    </div>
-  `;
-
-  document.body.appendChild(secretScreen);
-
-  const showScreen = id => {
+  function showScreen(id) {
     screens.forEach(screenId => {
       const element = $(screenId);
-      if (element) element.classList.toggle("hidden", screenId !== id);
+      if (element) {
+        element.classList.toggle("hidden", screenId !== id);
+      }
     });
+
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }
 
   const escapeHTML = value =>
     String(value ?? "").replace(/[&<>"']/g, c => ({
@@ -128,17 +152,13 @@
     );
   };
 
-  // Navigation
+  // Main navigation
   $("enterButton").addEventListener("click", () => {
     showScreen("relationshipScreen");
   });
 
   $("backToWelcome").addEventListener("click", () => {
     showScreen("welcomeScreen");
-  });
-
-  $("backToRoles").addEventListener("click", () => {
-    showScreen("relationshipScreen");
   });
 
   $("homeLink").addEventListener("click", e => {
@@ -150,41 +170,53 @@
     showScreen("welcomeScreen");
   });
 
-  $("secretBackButton").addEventListener("click", () => {
-    showScreen("welcomeScreen");
-  });
-
-  // Relationship selection.
-  // Secret Admirer gets a separate screen.
-  // Everyone else skips the budget screen entirely.
+  // Relationship selection
   $("relationshipOptions").addEventListener("click", e => {
     const button = e.target.closest("[data-role]");
     if (!button) return;
 
     selectedRole = button.dataset.role;
 
+    if (selectedRole === "friend") {
+      showFriendScreen();
+      return;
+    }
+
     if (selectedRole === "secret") {
       showSecretScreen();
       return;
     }
 
-    startWishlist();
+    if (roleNames[selectedRole]) {
+      startWishlist();
+    }
   });
 
-  function showSecretScreen() {
-    const secretSettings = data.generalNotes?.secretAdmirer || {};
+  // Friend-only message page
+  function showFriendScreen() {
+    $("friendScreenMessage").textContent =
+      data.messages?.friend ||
+      "I don't need a present from you, but if you insist...\n\nTo be known is to be loved. Anything you think I'd like, I'll love. ❤️";
 
-    $("secretMessage").textContent =
-      secretSettings.message ||
+    showScreen("friendScreen");
+  }
+
+  // Secret Admirer-only message page
+  function showSecretScreen() {
+    const settings = data.generalNotes?.secretAdmirer || {};
+
+    $("secretScreenMessage").textContent =
+      settings.message ||
       "No presents here. If you've been keeping feelings for me a secret, write me a letter. Tell me who you are and what you've been wanting to say. Be brave—Christmas is a good time for honesty. 💌";
 
-    $("snooperMessage").textContent =
-      secretSettings.snooperMessage ||
-      "If you're family, a friend, or just snooping around: your Christmas assignment is to get me a boyfriend. I don't need another present—I need a man. Make some calls. Work your connections. 😂";
+    $("secretScreenExtra").textContent =
+      settings.snooperMessage ||
+      "If you're family, a friend, or just snooping around: your Christmas assignment is to get me a boyfriend. I don't need another present—I need a man. Make some calls. Work your connections. Christmas miracles are encouraged. 😂";
 
     showScreen("secretScreen");
   }
 
+  // Wishlist access is limited to family roles.
   function startWishlist() {
     $("routeEyebrow").textContent =
       `${roleNames[selectedRole].toUpperCase()} ACCESS GRANTED`;
@@ -205,7 +237,7 @@
     showScreen("wishlistScreen");
   }
 
-  // Gift cards: no prices and no priority labels.
+  // Gift cards: no prices or priority labels.
   function giftCard(gift) {
     const image = gift.image
       ? `<img src="${escapeHTML(gift.image)}"
@@ -305,7 +337,7 @@
     renderGifts();
   });
 
-  // Surprise me button
+  // Surprise me
   $("surpriseButton").addEventListener("click", () => {
     const choices = visibleGifts();
 
