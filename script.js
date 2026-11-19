@@ -238,13 +238,22 @@
   }
 
   // Gift cards: no prices or priority labels.
+  
+  // Gift cards: no prices or priority labels.
   function giftCard(gift) {
-    const image = gift.image
-      ? `<img src="${escapeHTML(gift.image)}"
+    const emoji = escapeHTML(gift.emoji || "🎁");
+
+    // The thermal round brush should never display a photo.
+    const isRoundBrush = gift.name.toLowerCase().includes("round brush");
+
+    const image = gift.image && !isRoundBrush
+      ? `<img
+          src="${escapeHTML(gift.image)}"
           alt="${escapeHTML(gift.name)}"
           loading="lazy"
-          onerror="this.parentElement.innerHTML='<span>🎁</span>'">`
-      : `<span aria-hidden="true">${escapeHTML(gift.emoji || "🎁")}</span>`;
+          onerror="this.outerHTML='<span aria-hidden=&quot;true&quot;>${emoji}</span>'"
+        >`
+      : `<span aria-hidden="true">${emoji}</span>`;
 
     const link = gift.link
       ? `<a class="gift-link"
