@@ -58,7 +58,7 @@ window.WISHLIST_DATA = {
       description: "The Conair thermal round brush is a reference. Barrel size doesn't matter—any thermal round brush is fine!",
       category: "Practical Items",
       link: "https://www.walmart.ca/en/ip/Conair-Double-Ceramic-Thermal-Round-Brush-1-25-inch-Barrel-White-Gift-for-Her-1-Pk/6000207968990",
-      image: "https://i5.walmartimages.ca/asr/dea1443f-dd28-42d9-bf4f-2d69f6263f-b2.2aee7bed95c27e1172eec15406a90864.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF",
+      image: "",
       emoji: "💇‍♀️",
       favorite: false,
       recommendedFor: "parents"
